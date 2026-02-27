@@ -1,13 +1,20 @@
 public class PalindromeCheckerApp {
 
     static boolean isPalindrome(String str) {
-        String reversed = "";
+        char[] chars = str.toCharArray();
 
-        for (int i = str.length() - 1; i >= 0; i--) {
-            reversed = reversed + str.charAt(i);
+        int left = 0;
+        int right = chars.length - 1;
+
+        while (left < right) {
+            if (chars[left] != chars[right]) {
+                return false;
+            }
+            left++;
+            right--;
         }
 
-        return str.equals(reversed);
+        return true;
     }
 
     public static void main(String[] args) {
