@@ -1,47 +1,55 @@
 import java.util.Scanner;
 
-public class RecursivePalindromeChecker {
+public class EnhancedPalindromeChecker {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
-        System.out.print("Enter a string to check: ");
-        String input = scanner.nextLine();
-        
-        // Clean the string: remove non-alphanumeric and convert to lowercase
-        String cleanedInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        
-        if (isPalindrome(cleanedInput, 0, cleanedInput.length() - 1)) {
-            System.out.println("Result: '" + input + "' is a palindrome.");
-        } else {
-            System.out.println("Result: '" + input + "' is NOT a palindrome.");
-        }
-        
+
+        System.out.println("--- UC10: Palindrome Checker (Advanced) ---");
+        System.out.print("Enter text: ");
+        String originalInput = scanner.nextLine();
+
+        // 1. Preprocessing / Normalization
+        String processedInput = preprocess(originalInput);
+
+        // 2. Validation
+        boolean result = isPalindrome(processedInput);
+
+        // 3. Output
+        System.out.println("\nOriginal: " + originalInput);
+        System.out.println("Processed: " + processedInput);
+        System.out.println("Is Palindrome: " + result);
+
         scanner.close();
     }
 
     /**
-     * Recursive method to check if a string is a palindrome.
-     * @param str The string to check
-     * @param start The current starting index
-     * @param end The current ending index
-     * @return true if palindrome, false otherwise
+     * Normalizes the string using Regular Expressions (Regex).
+     * UC10 Key Concept: String Preprocessing
      */
-    public static boolean isPalindrome(String str, int start, int end) {
-        // --- Base Conditions ---
-        
-        // If pointers cross or meet, all characters matched
-        if (start >= end) {
-            return true;
-        }
+    private static String preprocess(String input) {
+        if (input == null) return "";
 
-        // If characters at current positions don't match, it's not a palindrome
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
+        // [^a-zA-Z0-9] means "anything that is NOT a letter or a number"
+        // .replaceAll replaces those matches with an empty string (removes them)
+        // .toLowerCase() ensures 'A' == 'a'
+        return input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    }
 
-        // --- Recursive Step ---
-        // Move inward: increment start and decrement end
-        return isPalindrome(str, start + 1, end - 1);
+    /**
+     * Standard Two-Pointer approach to validate the cleaned string.
+     */
+    private static boolean isPalindrome(String str) {
+        int left = 0;
+        int right = str.length() - 1;
+
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }
